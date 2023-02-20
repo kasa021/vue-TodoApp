@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import {ref,reactive,computed, defineComponent} from 'vue'
+import { ref, reactive, computed, onMounted, onBeforeUnmount, watch } from 'vue'
+import TodoAdd from './components/TodoAdd.vue'
+
 
 interface Todo {
   text: string;
@@ -16,7 +18,7 @@ let todoNum = computed(() => {
   return todos.value.length;
 });
 const AddTodo = () => {
-  if(input.text == ''){
+  if (input.text == '') {
     alert('Please enter a todo');
     return;
   }
@@ -31,15 +33,31 @@ const DeleteTodo = () => {
   todos.value = todos.value.filter(todo => !todo.isDone);
 };
 
+onMounted(() => {
+  const todosString = localStorage.getItem("todos");
+  if (todosString) {
+    todos.value = JSON.parse(todosString);
+  }
+});
+
+const setToLocalStorage = () => {
+  localStorage.setItem("todos", JSON.stringify(todos.value));
+};
+
+watch(todos, setToLocalStorage, { deep: true });
+
+
 </script>
 
 <template>
-<h1> My Todo App</h1>
-<input type="text" v-model="input.text"/><button @click="AddTodo">Add</button><button @click="DeleteTodo">Delete</button>
-<p v-if="todoNum == 0">No todos</p>
-<ul v-else>
-  <li v-for = "todo in todos"><input type ="checkbox" v-model="todo.isDone"/><span :class="{'todo-done': todo.isDone}">{{ todo.text }}</span></li>
-</ul>
+  <h1> My Todo App</h1>
+  <TodoAdd @add-todo="AddTodo" @delete-todo="DeleteTodo" v-model:text="input.text" />
+  <p v-if="todoNum == 0">No todos</p>
+  <ul v-else>
+    <li v-for="todo in todos"><input type="checkbox" @input="setToLocalStorage" v-model="todo.isDone" /><span
+        :class="{ 'todo-done': todo.isDone }">{{
+          todo.text }}</span></li>
+  </ul>
 </template>
 
 <style>
