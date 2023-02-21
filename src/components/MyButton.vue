@@ -5,10 +5,11 @@
 </template>
 
 <style scoped>
-.my-btn {
-  color: #fff;
+
+[theme="custom-dark"] {
   background-color: #333;
-  margin-left: 0.5em;
-  border-radius: 0.5em;
+  color: #fff;
 }
+
+
 </style>

@@ -1,7 +1,15 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import TodoAdd from './components/TodoAdd.vue'
+import {useDark,useToggle} from '@vueuse/core'
 
+const isDark = useDark({
+  selector: "body", //element to add attribute to
+  attribute: "theme", // attribute name
+  valueDark: "custom-dark", // attribute value for dark mode
+  valueLight: "custom-light", // attribute value for light mode
+});
+const toggleDark =useToggle(isDark)
 
 interface Todo {
   text: string;
@@ -58,14 +66,19 @@ watch(todos, setToLocalStorage, { deep: true });
         :class="{ 'todo-done': todo.isDone }">{{
           todo.text }}</span></li>
   </ul>
+
+  <button @click="toggleDark()" class="isDark()">Toggle Color Mode</button>
 </template>
 
 <style>
-body {
-  background-color: #eee;
+
+[theme="custom-dark"] {
+  background-color: #333;
+  color: #fff;
 }
 
-.todo-done {
-  text-decoration: line-through;
+[theme="custom-light"] {
+  background-color: #fff;
+  color: #333;
 }
 </style>
