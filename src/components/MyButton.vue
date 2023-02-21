@@ -1,15 +1,11 @@
 <template>
-    <button class="my-btn">
+    <button >
         <slot />
     </button>
 </template>
 
-<style scoped>
+<style >
 
-[theme="custom-dark"] {
-  background-color: #333;
-  color: #fff;
-}
 
 
 </style>

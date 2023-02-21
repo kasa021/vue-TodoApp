@@ -67,17 +67,21 @@ watch(todos, setToLocalStorage, { deep: true });
           todo.text }}</span></li>
   </ul>
 
-  <button @click="toggleDark()" class="isDark()">Toggle Color Mode</button>
+  <button @click="toggleDark()">Toggle Color Mode</button>
 </template>
 
 <style>
+input {
+  color:black
+}
 
-[theme="custom-dark"] {
+
+[theme="custom-dark"] button,body{
   background-color: #333;
   color: #fff;
 }
 
-[theme="custom-light"] {
+[theme="custom-light"]{
   background-color: #fff;
   color: #333;
 }
